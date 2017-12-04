@@ -9,7 +9,7 @@ using NewsServiceApp.Models;
 namespace NewsServiceApp.Controllers
 {
     [Route("api/[controller]")]
-    public class NewsController : Controller
+    public class  NewsController : Controller
     {
 
         private INewsRepository newsrepository;
