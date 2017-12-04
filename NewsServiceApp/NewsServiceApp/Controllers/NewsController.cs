@@ -26,11 +26,17 @@ namespace NewsServiceApp.Controllers
             return newsrepository.GetAll();
         }
 
+        [HttpGet("daily")]
+        public IQueryable<News> GetAllDailyNews()
+        {
+            return newsrepository.GetAllDailyNews();
+        }
+
         // GET api/news/5
         [HttpGet("{id}")]
         public News Get(int id)
         {
-            return newsrepository.Find(id);
+            return newsrepository.FindById(id);
         }
 
         // POST api/values

@@ -28,11 +28,29 @@ namespace NewsServiceApp.Repository
             }
         }
 
-        public News Find(int id)
+        public News FindById(int id)
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                return db.Query<News>("SELECT * FROM news WHERE id = @Id", new { Id = id}).FirstOrDefault();
+                return db.Query<News>("SELECT * FROM news WHERE id = @Id", new {Id = id}).FirstOrDefault();
+            }
+        }
+
+        public IQueryable<News> GetAllDailyNews()
+        {
+            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                return db.Query<News, Category, News>(@"SELECT n.id, n.news_heading, n.news_text, n.date_create, n.date_update,
+                                                          c.id, c.name
+                                                          FROM news n 
+                                                          INNER JOIN category c 
+                                                          ON c.id = n.news_category_id 
+                                                          WHERE c.name = 'daily'", (n, c) =>
+                                                          {
+                                                              n.Category = c;
+                                                              return n;
+                                                          },
+                                                          splitOn: "id").AsQueryable();
             }
         }
 

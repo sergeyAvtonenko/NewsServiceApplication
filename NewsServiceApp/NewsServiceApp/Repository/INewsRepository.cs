@@ -8,8 +8,10 @@ namespace NewsServiceApp.Repository
 {
     public interface INewsRepository
     {
-        News Find(int id);
+        News FindById(int id);
         IEnumerable<News> GetAll();
+
+        IQueryable<News> GetAllDailyNews();
 
         News Add(News news);
         News Update(News news);
