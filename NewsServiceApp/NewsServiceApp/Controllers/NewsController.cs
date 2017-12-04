@@ -26,11 +26,11 @@ namespace NewsServiceApp.Controllers
             return newsrepository.GetAll();
         }
 
-        // GET api/values/5
+        // GET api/news/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public News Get(int id)
         {
-            return "value";
+            return newsrepository.Find(id);
         }
 
         // POST api/values

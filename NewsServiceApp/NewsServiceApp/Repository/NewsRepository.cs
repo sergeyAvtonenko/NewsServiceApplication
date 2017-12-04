@@ -28,6 +28,15 @@ namespace NewsServiceApp.Repository
             }
         }
 
+        public News Find(int id)
+        {
+            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                return db.Query<News>("SELECT * FROM news WHERE id = @Id", new { Id = id}).FirstOrDefault();
+            }
+        }
+
+
         public News Add(News news)
         {
             throw new NotImplementedException();
@@ -37,12 +46,7 @@ namespace NewsServiceApp.Repository
         {
             throw new NotImplementedException();
         }
-
-        public News Find(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public News Update(News news)
         {
             throw new NotImplementedException();
