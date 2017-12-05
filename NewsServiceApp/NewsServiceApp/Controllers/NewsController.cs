@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewsServiceApp.Repository;
 using NewsServiceApp.Models;
+using NewsServiceApp.Dto;
 
 namespace NewsServiceApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace NewsServiceApp.Controllers
             newsrepository = _newsrepository;
         }
 
-        // GET api/news
+        //Need to delete
         [HttpGet]
         public IEnumerable<News> GetAll()
         {
@@ -32,23 +33,30 @@ namespace NewsServiceApp.Controllers
             return newsrepository.GetAllDailyNews();
         }
 
-        // GET api/news/5
+        [HttpGet("important")]
+        public IQueryable<News> GetAllImportantNews()
+        {
+            return newsrepository.GetAllImportantNews();
+        }
+
         [HttpGet("{id}")]
-        public News Get(int id)
+        public NewsDto Get(int id)
         {
             return newsrepository.FindById(id);
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]News news)
         {
+            newsrepository.Add(news);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]News news)
         {
+            news.id = id;
+            if (ModelState.IsValid)
+                newsrepository.Update(news);
         }
 
         // DELETE api/values/5

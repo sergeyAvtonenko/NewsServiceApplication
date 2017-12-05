@@ -1,4 +1,5 @@
-﻿using NewsServiceApp.Models;
+﻿using NewsServiceApp.Dto;
+using NewsServiceApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,14 @@ namespace NewsServiceApp.Repository
 {
     public interface INewsRepository
     {
-        News FindById(int id);
-        IEnumerable<News> GetAll();
+        IEnumerable<News> GetAll();             //Need to delete
 
-        IQueryable<News> GetAllDailyNews();
+        NewsDto FindById(int id);               //ok
+        IQueryable<News> GetAllDailyNews();     //ok
+        IQueryable<News> GetAllImportantNews(); //ok
+        void Add(News news);                    //ok
+        void Update(News news);
 
-        News Add(News news);
-        News Update(News news);
         void Delete(int id);
     }
 }
