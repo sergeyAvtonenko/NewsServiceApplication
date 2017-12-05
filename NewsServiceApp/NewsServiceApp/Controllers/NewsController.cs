@@ -20,29 +20,25 @@ namespace NewsServiceApp.Controllers
             newsrepository = _newsrepository;
         }
 
-        //Need to delete
-        [HttpGet]
-        public IEnumerable<News> GetAll()
-        {
-            return newsrepository.GetAll();
-        }
-
         [HttpGet("daily")]
-        public IQueryable<News> GetAllDailyNews()
+        public async Task<ActionResult> GetAllDailyNews()
         {
-            return newsrepository.GetAllDailyNews();
+            var result = await newsrepository.GetAllDailyNews();
+            return Ok(result);
         }
 
         [HttpGet("important")]
-        public IQueryable<News> GetAllImportantNews()
+        public async Task<ActionResult> GetAllImportantNews()
         {
-            return newsrepository.GetAllImportantNews();
+            var result = await newsrepository.GetAllImportantNews();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public NewsDto Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            return newsrepository.FindById(id);
+            var result = await newsrepository.FindById(id);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -59,10 +55,10 @@ namespace NewsServiceApp.Controllers
                 newsrepository.Update(news);
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            newsrepository.Delete(id);
         }
     }
 }

@@ -20,31 +20,26 @@ namespace NewsServiceApp.Repository
         {
             this.configuration = configuration;
         }
-        //Need to delete this method 
-        public IEnumerable<News> GetAll()
-        {
-            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
-            {
-                return db.Query<News>("SELECT * FROM news");
-            }
-        }
+
         //Find by Id, return Dto, maybe need to change return
-        public NewsDto FindById(int id)
+        public async Task<NewsDto> FindById(int id)
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                var qr = db.Query<News>("SELECT * FROM news WHERE id = @Id", new { Id = id }).FirstOrDefault();
+                var qr = await db.QueryAsync<News>("SELECT * FROM news WHERE id = @Id", new { Id = id });
+
+                var qrResult = qr.FirstOrDefault();
                 
-                return new NewsDto() { id = qr.id, date_create = qr.date_create, date_update = qr.date_update, news_heading = qr.news_heading, news_text = qr.news_text, news_category_id = qr.news_category_id };
+                return new NewsDto() { id = qrResult.id, date_create = qrResult.date_create, date_update = qrResult.date_update, news_heading = qrResult.news_heading, news_text = qrResult.news_text, news_category_id = qrResult.news_category_id };
             }
         }
 
         //Need to Return dto
-        public IQueryable<News> GetAllDailyNews()
+        public async Task<IEnumerable<News>> GetAllDailyNews()
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                return db.Query<News, Category, News>(@"SELECT n.news_heading, n.news_text, n.date_create, n.date_update, c.id, c.name 
+                return await db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
                                                         FROM news n 
                                                         INNER JOIN category c 
                                                         ON c.id = n.news_category_id 
@@ -55,15 +50,15 @@ namespace NewsServiceApp.Repository
                                                               n.Category = c;
                                                               return n;
                                                           },
-                                                        splitOn:"id").AsQueryable();
+                                                        splitOn:"id");
             }
         }
 
-        public IQueryable<News> GetAllImportantNews()
+        public async Task<IEnumerable<News>> GetAllImportantNews()
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                return db.Query<News, Category, News>(@"SELECT n.news_heading, n.news_text, n.date_create, n.date_update, c.id, c.name 
+                return await db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
                                                         FROM news n 
                                                         INNER JOIN category c 
                                                         ON c.id = n.news_category_id 
@@ -74,11 +69,10 @@ namespace NewsServiceApp.Repository
                                                             n.Category = c;
                                                             return n;
                                                         },
-                                                        splitOn: "id").AsQueryable();
+                                                        splitOn: "id");
             }
 
         }
-
 
         //ok
         public void Add(News news)
@@ -92,9 +86,12 @@ namespace NewsServiceApp.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                var qr = db.Execute(@"DELETE FROM news WHERE id = @Id", new { Id = id});
+            }
         }
-        
+
         public void Update(News news)
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
