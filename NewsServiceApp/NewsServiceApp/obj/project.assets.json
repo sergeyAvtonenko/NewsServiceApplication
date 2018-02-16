@@ -16,6 +16,37 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
+      "Dapper-Async/1.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Dapper.dll": {}
+        }
+      },
+      "FluentValidation/7.3.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        }
+      },
+      "FluentValidation.AspNetCore/7.3.4": {
+        "type": "package",
+        "dependencies": {
+          "FluentValidation": "7.3.4",
+          "Microsoft.AspNetCore.Mvc": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.AspNetCore.dll": {}
+        }
+      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -105,6 +136,49 @@
         },
         "runtime": {
           "lib/netstandard1.6/Microsoft.AI.DependencyCollector.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Cors/5.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.Web.Cors.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Web.Cors.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Core/5.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.3"
+        },
+        "compile": {
+          "lib/net45/System.Web.Http.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Web.Http.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Cors/5.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Cors": "5.2.3",
+          "Microsoft.AspNet.WebApi.Core": "[5.2.3, 5.3.0)"
+        },
+        "compile": {
+          "lib/net45/System.Web.Http.Cors.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Web.Http.Cors.dll": {}
         }
       },
       "Microsoft.AspNetCore/2.0.1": {
@@ -3227,6 +3301,38 @@
           "lib/netstandard1.5/StackExchange.Redis.StrongName.dll": {}
         }
       },
+      "Steeltoe.Discovery.Client/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
+          "NETStandard.Library": "1.6.1",
+          "Steeltoe.Discovery.Eureka.Client": "1.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Steeltoe.Discovery.Client.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Steeltoe.Discovery.Client.dll": {}
+        }
+      },
+      "Steeltoe.Discovery.Eureka.Client/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "9.0.1",
+          "System.Collections": "4.3.0",
+          "System.Net.Http": "4.3.1",
+          "System.Net.NameResolution": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Steeltoe.Discovery.Eureka.Client.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Steeltoe.Discovery.Eureka.Client.dll": {}
+        }
+      },
       "Swashbuckle.AspNetCore/1.1.0": {
         "type": "package",
         "dependencies": {
@@ -4009,7 +4115,7 @@
           "lib/netstandard1.3/System.Linq.Queryable.dll": {}
         }
       },
-      "System.Net.Http/4.3.0": {
+      "System.Net.Http/4.3.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -5161,6 +5267,43 @@
         "lib/netstandard2.0/Dapper.xml"
       ]
     },
+    "Dapper-Async/1.3.0": {
+      "sha512": "FeC7fbK0DDLRNx7S0gI0TOPAsn4lTOUbNvnI2aaJ0tBLsACB9DEDKzrO2/cMFXZsA5JoKO+9umzJOvnD8iky9g==",
+      "type": "package",
+      "path": "dapper-async/1.3.0",
+      "files": [
+        "dapper-async.1.3.0.nupkg.sha512",
+        "dapper-async.nuspec",
+        "lib/net45/Dapper.dll",
+        "lib/net45/Dapper.pdb"
+      ]
+    },
+    "FluentValidation/7.3.4": {
+      "sha512": "UMiYkJbHtGRTCFTmJdbmfJwRhJ/ENFeGZPkJS7WuZQmJV2PZ0glRXr4LZr40+OgwaJVi67Cy1DzR8uG+hVuvmA==",
+      "type": "package",
+      "path": "fluentvalidation/7.3.4",
+      "files": [
+        "fluentvalidation.7.3.4.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net45/FluentValidation.dll",
+        "lib/net45/FluentValidation.xml",
+        "lib/netstandard1.0/FluentValidation.dll",
+        "lib/netstandard1.0/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml"
+      ]
+    },
+    "FluentValidation.AspNetCore/7.3.4": {
+      "sha512": "MywXf/KKaFHglrQD8vKmcCrcl+8yY/ffqt912Wv8WCt7dDyRgrYVIdAatEu89yPEM0AaV8ONwD+GLXFUlZQDcg==",
+      "type": "package",
+      "path": "fluentvalidation.aspnetcore/7.3.4",
+      "files": [
+        "fluentvalidation.aspnetcore.7.3.4.nupkg.sha512",
+        "fluentvalidation.aspnetcore.nuspec",
+        "lib/netstandard2.0/FluentValidation.AspNetCore.dll",
+        "lib/netstandard2.0/FluentValidation.AspNetCore.xml"
+      ]
+    },
     "Libuv/1.10.0": {
       "sha512": "GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "type": "package",
@@ -5228,6 +5371,52 @@
         "lib/netstandard1.6/Microsoft.AI.DependencyCollector.xml",
         "microsoft.applicationinsights.dependencycollector.2.4.1.nupkg.sha512",
         "microsoft.applicationinsights.dependencycollector.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.Cors/5.2.3": {
+      "sha512": "6pGL9FwV+FAFK5At8B4TefhScN3Pwe589MCHopeLQVfuKuGdNEuNDEXL+SHCgdN1ZSHxPAhzSZHCL0xt90CKfQ==",
+      "type": "package",
+      "path": "microsoft.aspnet.cors/5.2.3",
+      "files": [
+        "lib/net45/System.Web.Cors.dll",
+        "microsoft.aspnet.cors.5.2.3.nupkg.sha512",
+        "microsoft.aspnet.cors.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Client/5.2.3": {
+      "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
+      "type": "package",
+      "path": "microsoft.aspnet.webapi.client/5.2.3",
+      "files": [
+        "lib/net45/System.Net.Http.Formatting.dll",
+        "lib/net45/System.Net.Http.Formatting.xml",
+        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.dll",
+        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml",
+        "microsoft.aspnet.webapi.client.5.2.3.nupkg.sha512",
+        "microsoft.aspnet.webapi.client.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Core/5.2.3": {
+      "sha512": "o90QYlRV8VKR1S7+EcJw9w8WSyVFLl+IIzN8ILZ+n2t6rsc/KS8kBxRzA7wCFPRUHhebCfLqilBk39phvanx3g==",
+      "type": "package",
+      "path": "microsoft.aspnet.webapi.core/5.2.3",
+      "files": [
+        "Content/web.config.transform",
+        "lib/net45/System.Web.Http.dll",
+        "lib/net45/System.Web.Http.xml",
+        "microsoft.aspnet.webapi.core.5.2.3.nupkg.sha512",
+        "microsoft.aspnet.webapi.core.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Cors/5.2.3": {
+      "sha512": "M45cmd93Qr3FJeH9AIyzzfb9XasEoE0lQJacqDtvJFrJl2xuDBhiAXYWv+JkIBHmJcjP9VtcfqTZmJ7eogoDkA==",
+      "type": "package",
+      "path": "microsoft.aspnet.webapi.cors/5.2.3",
+      "files": [
+        "lib/net45/System.Web.Http.Cors.dll",
+        "lib/net45/System.Web.Http.Cors.xml",
+        "microsoft.aspnet.webapi.cors.5.2.3.nupkg.sha512",
+        "microsoft.aspnet.webapi.cors.nuspec"
       ]
     },
     "Microsoft.AspNetCore/2.0.1": {
@@ -8437,6 +8626,28 @@
         "stackexchange.redis.strongname.nuspec"
       ]
     },
+    "Steeltoe.Discovery.Client/1.1.0": {
+      "sha512": "7iExWEEF1D/yNaRcVvTwzeP6PbbHHamg0LRdPMgqhNnIzQ5VMVExCwVxQP4aiVnw5wTCX1+gajST9Ya+TObJ2g==",
+      "type": "package",
+      "path": "steeltoe.discovery.client/1.1.0",
+      "files": [
+        "lib/net452/Steeltoe.Discovery.Client.dll",
+        "lib/netstandard1.3/Steeltoe.Discovery.Client.dll",
+        "steeltoe.discovery.client.1.1.0.nupkg.sha512",
+        "steeltoe.discovery.client.nuspec"
+      ]
+    },
+    "Steeltoe.Discovery.Eureka.Client/1.1.0": {
+      "sha512": "PXNhsUYs71AGUWq4lTKXfPiufCvBmp77AWIwnAyKjkXlFTOKwRmp2UN6+aKB9hCKs35xbT/Kx3x7nGkviNcb1Q==",
+      "type": "package",
+      "path": "steeltoe.discovery.eureka.client/1.1.0",
+      "files": [
+        "lib/net452/Steeltoe.Discovery.Eureka.Client.dll",
+        "lib/netstandard1.3/Steeltoe.Discovery.Eureka.Client.dll",
+        "steeltoe.discovery.eureka.client.1.1.0.nupkg.sha512",
+        "steeltoe.discovery.eureka.client.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/1.1.0": {
       "sha512": "xlbi/AUp3UM4DmPX0SIV50xboMZDl64pY45nBsdDJarUK0i5pSi/FLBqUOikdP7wUrFvtOAEnOW0cHkR6hyaeA==",
       "type": "package",
@@ -10449,10 +10660,10 @@
         "system.linq.queryable.nuspec"
       ]
     },
-    "System.Net.Http/4.3.0": {
-      "sha512": "sYg+FtILtRQuYWSIAuNOELwVuVsxVyJGWQyOnlAzhV4xvhyFnON1bAzYYC+jjRW8JREM45R0R5Dgi8MTC5sEwA==",
+    "System.Net.Http/4.3.1": {
+      "sha512": "UrTyRczM3ZvNk6oetBuwlu67MFKKRva+r7bw4JDVZ6Y2IukyZ24td5ppsieu/4yZlogVAIuZul9GIQ3hoiz0yA==",
       "type": "package",
-      "path": "system.net.http/4.3.0",
+      "path": "system.net.http/4.3.1",
       "files": [
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
@@ -10525,7 +10736,7 @@
         "runtimes/win/lib/net46/System.Net.Http.dll",
         "runtimes/win/lib/netcore50/System.Net.Http.dll",
         "runtimes/win/lib/netstandard1.3/System.Net.Http.dll",
-        "system.net.http.4.3.0.nupkg.sha512",
+        "system.net.http.4.3.1.nupkg.sha512",
         "system.net.http.nuspec"
       ]
     },
@@ -13366,9 +13577,14 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Dapper >= 1.50.4",
+      "Dapper-Async >= 1.3.0",
+      "FluentValidation >= 7.3.4",
+      "FluentValidation.AspNetCore >= 7.3.4",
+      "Microsoft.AspNet.WebApi.Cors >= 5.2.3",
       "Microsoft.AspNetCore.All >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0",
       "MySql.Data >= 6.10.4",
+      "Steeltoe.Discovery.Client >= 1.1.0",
       "Swashbuckle.AspNetCore >= 1.1.0"
     ]
   },
@@ -13382,11 +13598,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "H:\\Учеба в ForteGroup\\Готовый проект\\NewsServiceApplication\\NewsServiceApp\\NewsServiceApp\\NewsServiceApp.csproj",
+      "projectUniqueName": "H:\\NewsServiceApplication.Net\\NewsServiceApp\\NewsServiceApp\\NewsServiceApp.csproj",
       "projectName": "NewsServiceApp",
-      "projectPath": "H:\\Учеба в ForteGroup\\Готовый проект\\NewsServiceApplication\\NewsServiceApp\\NewsServiceApp\\NewsServiceApp.csproj",
+      "projectPath": "H:\\NewsServiceApplication.Net\\NewsServiceApp\\NewsServiceApp\\NewsServiceApp.csproj",
       "packagesPath": "C:\\Users\\serge\\.nuget\\packages\\",
-      "outputPath": "H:\\Учеба в ForteGroup\\Готовый проект\\NewsServiceApplication\\NewsServiceApp\\NewsServiceApp\\obj\\",
+      "outputPath": "H:\\NewsServiceApplication.Net\\NewsServiceApp\\NewsServiceApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13420,9 +13636,21 @@
             "target": "Package",
             "version": "1.50.4"
           },
+          "Microsoft.AspNet.WebApi.Cors": {
+            "target": "Package",
+            "version": "5.2.3"
+          },
           "MySql.Data": {
             "target": "Package",
             "version": "6.10.4"
+          },
+          "FluentValidation.AspNetCore": {
+            "target": "Package",
+            "version": "7.3.4"
+          },
+          "FluentValidation": {
+            "target": "Package",
+            "version": "7.3.4"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",
@@ -13436,6 +13664,14 @@
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "2.0.3"
+          },
+          "Dapper-Async": {
+            "target": "Package",
+            "version": "1.3.0"
+          },
+          "Steeltoe.Discovery.Client": {
+            "target": "Package",
+            "version": "1.1.0"
           }
         },
         "imports": [
@@ -13445,5 +13681,57 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Dapper-Async 1.3.0\" был восстановлен с помощью \".NETFramework,Version=v4.6.1\", а не целевой платформы проекта \".NETCoreApp,Version=v2.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Dapper-Async",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Microsoft.AspNet.Cors 5.2.3\" был восстановлен с помощью \".NETFramework,Version=v4.6.1\", а не целевой платформы проекта \".NETCoreApp,Version=v2.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Microsoft.AspNet.Cors",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Microsoft.AspNet.WebApi.Client 5.2.3\" был восстановлен с помощью \".NETFramework,Version=v4.6.1\", а не целевой платформы проекта \".NETCoreApp,Version=v2.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Microsoft.AspNet.WebApi.Client",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Microsoft.AspNet.WebApi.Core 5.2.3\" был восстановлен с помощью \".NETFramework,Version=v4.6.1\", а не целевой платформы проекта \".NETCoreApp,Version=v2.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Microsoft.AspNet.WebApi.Core",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Microsoft.AspNet.WebApi.Cors 5.2.3\" был восстановлен с помощью \".NETFramework,Version=v4.6.1\", а не целевой платформы проекта \".NETCoreApp,Version=v2.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Microsoft.AspNet.WebApi.Cors",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
 }

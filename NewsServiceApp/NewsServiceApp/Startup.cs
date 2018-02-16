@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NewsServiceApp.Repository;
 using Swashbuckle.AspNetCore.Swagger;
+using NewsServiceApp.Service;
+using FluentValidation.AspNetCore;
+using Steeltoe.Discovery.Client;
 
 namespace NewsServiceApp
 {
@@ -22,11 +19,15 @@ namespace NewsServiceApp
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddMvc().AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddDiscoveryClient(Configuration);
+            services.AddCors();
+
             services.AddTransient<INewsRepository, NewsRepository>();
+            services.AddTransient<INewsService, NewsService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -34,7 +35,6 @@ namespace NewsServiceApp
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -43,6 +43,8 @@ namespace NewsServiceApp
             }
 
             app.UseMvc();
+            app.UseDiscoveryClient();
+            app.UseCors(builder => builder.AllowAnyOrigin());            
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

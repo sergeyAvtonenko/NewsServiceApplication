@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
-using NewsServiceApp.Dto;
 
 namespace NewsServiceApp.Repository
 {
@@ -21,84 +20,135 @@ namespace NewsServiceApp.Repository
             this.configuration = configuration;
         }
 
-        //Find by Id, return Dto, maybe need to change return
-        public async Task<NewsDto> FindById(int id)
+        public async Task<IEnumerable<News>> GetNewsPageAsync(int skip, int take, int news_category_id)
+        {
+            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            {
+                string query = @"SELECT *
+                                FROM news
+                                WHERE news_category_id = @News_category_id
+                                ORDER BY date_create DESC
+                                LIMIT @Skip,@Take";
+                var news = await db.QueryAsync<News>(query, new { Skip = skip, Take = take, News_category_id = news_category_id });
+
+                return news;
+            }
+        }
+
+        public async Task<News> FindById(int id)
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
                 var qr = await db.QueryAsync<News>("SELECT * FROM news WHERE id = @Id", new { Id = id });
 
-                var qrResult = qr.FirstOrDefault();
-                
-                return new NewsDto() { id = qrResult.id, date_create = qrResult.date_create, date_update = qrResult.date_update, news_heading = qrResult.news_heading, news_text = qrResult.news_text, news_category_id = qrResult.news_category_id };
+                return qr.FirstOrDefault();
             }
-        }
+        }        
 
-        //Need to Return dto
-        public async Task<IEnumerable<News>> GetAllDailyNews()
+        public async Task<News> Add(News news)
         {
             using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
             {
-                return await db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
-                                                        FROM news n 
-                                                        INNER JOIN category c 
-                                                        ON c.id = n.news_category_id 
-                                                        WHERE c.name = 'daily'
-                                                        ORDER BY n.date_create DESC", 
-                                                        (n, c) =>
-                                                          {
-                                                              n.Category = c;
-                                                              return n;
-                                                          },
-                                                        splitOn:"id");
-            }
-        }
-
-        public async Task<IEnumerable<News>> GetAllImportantNews()
-        {
-            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
-            {
-                return await db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
-                                                        FROM news n 
-                                                        INNER JOIN category c 
-                                                        ON c.id = n.news_category_id 
-                                                        WHERE c.name = 'important'
-                                                        ORDER BY n.date_create DESC",
-                                                        (n, c) =>
-                                                        {
-                                                            n.Category = c;
-                                                            return n;
-                                                        },
-                                                        splitOn: "id");
-            }
-
-        }
-
-        //ok
-        public void Add(News news)
-        {
-            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
-            {
-                var qr = db.Execute(@"INSERT INTO news (news_heading, news_text, date_create, date_update, news_category_id)
+                var qr = await db.ExecuteAsync(@"INSERT INTO news (news_heading, news_text, date_create, date_update, news_category_id)
                                       VALUES (@news_heading, @news_text, @date_create, @date_update, @news_category_id)", news);
             }
+
+            return news;
         }
 
-        public void Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            try
             {
-                var qr = db.Execute(@"DELETE FROM news WHERE id = @Id", new { Id = id});
+                using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await db.ExecuteAsync(@"DELETE FROM news WHERE id = @Id", new { Id = id });
+                }
+                return true;
             }
+            catch
+            {
+                return false;
+            }
+            
         }
 
-        public void Update(News news)
+
+        public async Task<bool> Update(News news)
         {
-            using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            try
             {
-                var qr = db.Query(@"UPDATE news SET news_heading = @news_heading, news_text = @news_text, date_create = @date_create, date_update = @date_update, news_category_id = @news_category_id
+                using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await db.ExecuteAsync(@"UPDATE news SET news_heading = @news_heading, news_text = @news_text, date_create = @date_create, date_update = @date_update, news_category_id = @news_category_id
                                     WHERE id = @id", news);
+                }
+                return true;
             }
+            catch
+            {
+                return false;
+            }
+
         }
+
+        //public Task<IEnumerable<News>> GetNewsByCategory(string _category)
+        //{
+        //    using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+        //    {
+        //        return db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
+        //                                                FROM news n 
+        //                                                INNER JOIN category c 
+        //                                                ON c.id = n.news_category_id 
+        //                                                WHERE c.name = @category
+        //                                                ORDER BY n.date_create DESC",
+        //                                                (n, c) =>
+        //                                                {                                                            
+        //                                                    n.Category = c;
+        //                                                    return n;
+        //                                                }, new {category = _category},
+        //                                                splitOn: "id");
+        //    }
+        //}
+
+
+        //public Task<IEnumerable<News>> GetAllDailyNews()
+        //{
+        //    using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+        //    {
+        //        return db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
+        //                                                FROM news n 
+        //                                                INNER JOIN category c 
+        //                                                ON c.id = n.news_category_id 
+        //                                                WHERE c.name = 'daily'
+        //                                                ORDER BY n.date_create DESC", 
+        //                                                (n, c) =>
+        //                                                  {
+        //                                                      n.Category = c;
+        //                                                      return n;
+        //                                                  },
+        //                                                splitOn:"id");
+        //    }
+        //}
+
+        //public async Task<IEnumerable<News>> GetAllImportantNews()
+        //{
+        //    using (IDbConnection db = new MySqlConnection(configuration.GetConnectionString("DefaultConnection")))
+        //    {
+        //        return await db.QueryAsync<News, Category, News>(@"SELECT n.*, c.id, c.name 
+        //                                                FROM news n 
+        //                                                INNER JOIN category c 
+        //                                                ON c.id = n.news_category_id 
+        //                                                WHERE c.name = 'important'
+        //                                                ORDER BY n.date_create DESC",
+        //                                                (n, c) =>
+        //                                                {
+        //                                                    n.Category = c;
+        //                                                    return n;
+        //                                                },
+        //                                                splitOn: "id");                
+        //    }
+
+        //}
     }
 }

@@ -1,64 +1,124 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewsServiceApp.Repository;
 using NewsServiceApp.Models;
-using NewsServiceApp.Dto;
+using NewsServiceApp.Service;
+using System.Collections.Generic;
+using System;
 
 namespace NewsServiceApp.Controllers
 {
     [Route("api/[controller]")]
     public class  NewsController : Controller
     {
+        private INewsService newsService;
 
-        private INewsRepository newsrepository;
-
-        public NewsController(INewsRepository _newsrepository)
+        public NewsController(INewsService _newsService)
         {
-            newsrepository = _newsrepository;
+            this.newsService = _newsService;
         }
 
-        [HttpGet("daily")]
-        public async Task<ActionResult> GetAllDailyNews()
-        {
-            var result = await newsrepository.GetAllDailyNews();
-            return Ok(result);
-        }
-
-        [HttpGet("important")]
-        public async Task<ActionResult> GetAllImportantNews()
-        {
-            var result = await newsrepository.GetAllImportantNews();
-            return Ok(result);
-        }
-
-        [HttpGet("{id}")]
+        // GET api/news/{id}
+        [HttpGet("{id}", Name = "GetNewsRoute")]
+        [ProducesResponseType(typeof(News), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<ActionResult> Get(int id)
-        {
-            var result = await newsrepository.FindById(id);
-            return Ok(result);
+        {            
+            try
+            {
+                var result = await newsService.FindById(id);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
-
+        // POST api/news
         [HttpPost]
-        public void Post([FromBody]News news)
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> Add([FromBody]News news)
         {
-            newsrepository.Add(news);
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse { Status = false, ModelState = ModelState});
+            }
 
+            try
+            {
+                var addedNews = await newsService.Add(news);
+                if (news == null)
+                {
+                    return BadRequest(new ApiResponse { Status = false , ModelState = ModelState});
+                }
+                return CreatedAtRoute("GetNewsRoute", new { id = news.id },
+                        new ApiResponse { Status = true, News = news });
+            }
+            catch 
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+        // PUT api/news/{id}
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]News news)
-        {
-            news.id = id;
-            if (ModelState.IsValid)
-                newsrepository.Update(news);
-        }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Update(int id, [FromBody]News news)
         {
-            newsrepository.Delete(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse { Status = false, ModelState = ModelState });
+            }
+
+            try
+            {
+                var status = await newsService.Update(news);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true, News = news });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+        // DELETE api/news/{id}
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> Delete(int id)
+        {            
+            try
+            {
+                var status = await newsService.Delete(id); ;
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+        // GET api/news/page/{skip}/{take}/{news_category_id}
+        [HttpGet("page/{skip}/{take}/{news_category_id}")]
+        [ProducesResponseType(typeof(List<News>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> NewsPage(int skip, int take, int news_category_id)
+        {
+            try
+            {
+                var pagingResult = await newsService.GetNewsPageAsync(skip, take, news_category_id);
+                return Ok(pagingResult);
+            }
+            catch
+            {
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
     }
 }

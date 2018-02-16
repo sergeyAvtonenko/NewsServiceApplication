@@ -9,11 +9,14 @@ namespace NewsServiceApp.Repository
 {
     public interface INewsRepository
     {
-        Task<NewsDto> FindById(int id);
-        Task<IEnumerable<News>> GetAllDailyNews();
-        Task<IEnumerable<News>> GetAllImportantNews(); 
-        void Add(News news);                    
-        void Update(News news);
-        void Delete(int id);
+        //Task<IEnumerable<News>> GetAllDailyNews();
+        //Task<IEnumerable<News>> GetAllImportantNews();
+        //Task<IEnumerable<News>> GetNewsByCategory(string _category);
+
+        Task<News> FindById(int id);
+        Task<IEnumerable<News>> GetNewsPageAsync(int skip, int take, int news_category_id);
+        Task<News> Add(News news);
+        Task<bool> Update(News news);
+        Task<bool> Delete(int id);
     }
 }
